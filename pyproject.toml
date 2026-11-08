@@ -3,10 +3,14 @@ name = "bondad-kb"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = []
 
 [dependency-groups]
 dev = [
-    "zensical>=0.0.23",
+    "bondad-zensical",
+    "zensical>=0.1.0",
 ]
+
+[tool.uv.sources]
+bondad-zensical = { git = "https://github.com/BondadLabs/bondad-zensical" }

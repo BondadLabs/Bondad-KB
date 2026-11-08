@@ -17,11 +17,11 @@ jobs:
     steps:
       - uses: actions/configure-pages@v5
       - uses: actions/checkout@v5
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-      - run: pip install zensical
-      - run: zensical build --clean
+      # Install from uv.lock, so the build uses the pinned zensical and
+      # bondad-zensical theme versions.
+      - uses: astral-sh/setup-uv@v10
+      - run: uv sync --frozen
+      - run: uv run zensical build --clean
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site

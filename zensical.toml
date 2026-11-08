@@ -73,6 +73,10 @@ Copyright &copy; 2026 The authors
 # ----------------------------------------------------------------------------
 [project.theme]
 
+# The Bondad theme (https://github.com/BondadLabs/bondad-zensical). It brings
+# its own colour schemes, fonts, favicon and logo.
+name = "bondad"
+
 # change this to "classic" to use the traditional Material for MkDocs look.
 #variant = "classic"
 # variant = "classic"
@@ -259,20 +263,10 @@ features = [
 #
 # Read more:
 # - https://zensical.org/docs/setup/colors/
+#
+# Left unset: the Bondad theme's palette follows the system preference, with
+# a toggle between bondad-light and bondad-dark.
 # ----------------------------------------------------------------------------
-[[project.theme.palette]]
-scheme = "default"
-primary = "orange"
-accent = "indigo"
-toggle.icon = "lucide/sun"
-toggle.name = "Switch to dark mode"
-
-[[project.theme.palette]]
-scheme = "slate"
-primary = "orange"
-accent = "teal"
-toggle.icon = "lucide/moon"
-toggle.name = "Switch to light mode"
 
 # ----------------------------------------------------------------------------
 # In the "font" subsection you can configure the fonts used. By default, fonts
