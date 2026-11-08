@@ -1,0 +1,23 @@
+{#-
+  Home page: the site rendered as `systemctl status ehsan`.
+
+  The status text lives in docs/index.md, so it can be edited there. This
+  template only wraps it in the terminal frame and adds the closing prompt.
+
+  The stylesheet is linked from inside the content block rather than from
+  <head>: with `navigation.instant`, the head is not swapped on navigation,
+  so a head link would either never load (arriving from the blog) or leak
+  into the blog (leaving the home page). Inside the content it comes and
+  goes with the page.
+-#}
+{% extends "main.html" %}
+
+{% block content %}
+  <link rel="stylesheet" href="{{ 'stylesheets/home.css' | url }}">
+  <div class="st-home">
+    {{ page.content }}
+    <footer class="st-footer">
+      <span>ehsan@bondad:~$</span><span class="st-cursor" aria-hidden="true"></span>
+    </footer>
+  </div>
+{% endblock %}

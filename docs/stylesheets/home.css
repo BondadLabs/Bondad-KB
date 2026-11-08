@@ -1,0 +1,223 @@
+/*
+ * Home page: `systemctl status ehsan`.
+ *
+ * Loaded only by overrides/home.html, and every rule is scoped to
+ * `.st-home`, so nothing here reaches the blog. Colours come from the
+ * bondad theme's variables, so the light and dark schemes both work.
+ */
+
+.st-home {
+  /* Status green. The theme defines it per scheme (#3DDC97 dark, #13784F
+     light); the fallback is the dark value for a non-bondad palette. */
+  --st-green: var(--bondad-green, #3DDC97);
+  --st-muted: var(--md-default-fg-color--light);
+  --st-accent: var(--md-primary-fg-color);
+
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  max-width: 44rem;              /* 880px at the theme's 20px root */
+  margin: 1.6rem auto 0;
+  font-family: var(--md-code-font-family);
+  font-feature-settings: "liga" 0, "calt" 0;
+  color: var(--md-default-fg-color);
+}
+
+/* The section and its output. */
+.st-home .st-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  min-width: 0;                  /* let the scroll box shrink, not the page */
+}
+
+.md-typeset .st-home .st-prompt {
+  margin: 0;
+  font-family: inherit;
+  font-size: 0.9rem;             /* 18px */
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--md-default-fg-color);
+}
+
+.st-home .st-dollar {
+  color: var(--st-accent);
+}
+
+/* Horizontal scroll for the preformatted block, so long lines never wrap
+   and never push the page sideways. */
+.st-home .st-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.2rem;
+}
+
+.st-home .st-scroll:focus-visible {
+  outline: 0.1rem solid var(--st-accent);
+  outline-offset: 0.2rem;
+}
+
+.st-home .st-out {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  min-width: 100%;
+  /* Room for the last Docs link's 44px tap target, which the scroll box
+     would otherwise clip. */
+  padding-bottom: 0.4rem;
+  font-size: 0.8rem;             /* 16px */
+  line-height: 1.75;
+  white-space: pre;
+}
+
+/* Unit line: big, bold, pulsing dot. Overrides the theme's h1 styles,
+   including its "> " prompt, which would double up with the dot. */
+.md-typeset .st-home .st-unit {
+  margin: 0 0 0.7rem;
+  font-family: inherit;
+  font-size: clamp(1.1rem, 3.4vw, 1.5rem);   /* 22px → 30px */
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset .st-home .st-unit::before {
+  content: none;
+}
+
+.st-home .st-dot {
+  color: var(--st-green);
+  animation: st-pulse 1.6s ease-in-out infinite;
+}
+
+.st-home .st-desc {
+  font-weight: 500;
+  color: var(--st-muted);
+}
+
+.st-home .st-label {
+  color: var(--st-muted);
+}
+
+.st-home .st-ok {
+  font-weight: 800;
+  color: var(--st-green);
+}
+
+/* Docs links: bold, accent. The rows keep the status lines' rhythm; the
+   44px tap target comes from an invisible ::after on each link instead of
+   taller rows. Neighbouring targets overlap by 16px; a tap there goes to
+   the lower link. */
+.st-home .st-docs {
+  display: flex;
+  align-items: center;
+}
+
+.st-home .st-docs--first {
+  margin-top: 0.7rem;
+}
+
+.md-typeset .st-home .st-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 800;
+  color: var(--st-accent);
+  text-decoration: none;
+}
+
+.md-typeset .st-home .st-link::after {
+  content: "";
+  position: absolute;
+  left: -0.25em;
+  right: -0.25em;
+  top: 50%;
+  height: 2.2rem;                /* 44px */
+  transform: translateY(-50%);
+}
+
+/* Brand icon in front of a link's text (GitHub, LinkedIn). */
+.st-home .st-icon {
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5em;
+}
+
+.md-typeset .st-home .st-link:hover,
+.md-typeset .st-home .st-link:focus-visible {
+  color: var(--md-accent-fg-color);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Journal: the log lines under the unit info. Smaller than the status
+   block, with its own scroll box. Colours are the theme's per-scheme
+   tokens; the fallbacks are the dark values for a non-bondad palette.
+   Contrast on the page background: prefix 6.1 / 5.3, message 12.7 / 12.9,
+   amber 11.1 / 5.8 (dark / light). */
+.st-home .st-journal {
+  padding-top: 1rem;             /* 20px */
+  border-top: 0.05rem solid var(--bondad-border, var(--md-default-fg-color--lightest));
+}
+
+/* A flex column, like .st-out: with white-space: pre, a block container
+   would render the newlines between the line <div>s as blank lines. */
+.st-home .st-log-out {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  min-width: 100%;
+  font-size: 0.7rem;             /* 14px */
+  line-height: 1.9;
+  white-space: pre;
+  /* One step softer than the status values: 60% text, 40% muted. */
+  color: color-mix(in srgb, var(--md-default-fg-color) 60%, var(--st-muted));
+}
+
+.st-home .st-log-prefix {
+  color: var(--bondad-comment, var(--md-code-hl-comment-color));
+}
+
+.st-home .st-warn {
+  color: var(--bondad-amber, #FFB86B);
+}
+
+/* Closing prompt with a coral cursor block. */
+.st-home .st-footer {
+  display: flex;
+  align-items: flex-end;
+  padding-top: 1.2rem;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+  font-size: 0.65rem;            /* 13px */
+  color: var(--st-muted);
+}
+
+.st-home .st-cursor {
+  display: inline-block;
+  width: 0.56em;
+  height: 0.12em;
+  margin-left: 0.4em;
+  margin-bottom: 0.15em;
+  background: var(--md-primary-fg-color);
+  animation: st-blink 1.1s steps(1) infinite;
+}
+
+@keyframes st-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+@keyframes st-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .st-home .st-dot,
+  .st-home .st-cursor {
+    animation: none;
+  }
+}
