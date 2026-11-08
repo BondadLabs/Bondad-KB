@@ -54,11 +54,15 @@ real (LinkedIn and GitHub, Nov 2026).
   in the sudoers file. This incident will be reported."; `rm` → "not
   today."; `kubectl get pods` → `ehsan-0 … 3 (coffee) restarts`; `exit` →
   "there is no exit. there is only the blog."
-- **Real journal timestamps.** The journal lines under the status block
-  (`Nov 07 00:35:12 bondad ehsan[1]: …`) use fixed, hand-written
-  timestamps in `docs/index.md`. Later they could come from real dates:
-  the site's build time, or the dates of the newest blog posts (which
-  would tie in with the `journalctl` section above).
+- **Journal from real events.** The journal under the status block is
+  now live (`docs/javascripts/home-journal.js`): the visitor's clock,
+  one line every ~10s, rolling through 100 playful lines. Later, some
+  lines could come from real events with real dates, e.g. the newest
+  blog posts or the site's build time (ties in with the `journalctl`
+  section above).
+- **Journal, pause when hidden.** Lines keep arriving (slowly, as
+  browsers throttle timers) while the tab is in the background; could
+  pause on `visibilitychange` so a returning visitor sees fresh ones.
 - **Bondad Labs:** link to the Labs brand (`bondad/labs_`, coral) once it
   exists.
 

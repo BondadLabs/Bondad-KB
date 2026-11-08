@@ -14,10 +14,15 @@
 
 {% block content %}
   <link rel="stylesheet" href="{{ 'stylesheets/home.css' | url }}">
+  {#- Runs before the journal is parsed, so home.css can give it its live
+      height (and hide the no-JS lines) from the first paint, with no jump
+      when home-journal.js takes over. -#}
+  <script>document.documentElement.classList.add("st-js")</script>
   <div class="st-home">
     {{ page.content }}
     <footer class="st-footer">
       <span>ehsan@bondad:~$</span><span class="st-cursor" aria-hidden="true"></span>
     </footer>
   </div>
+  <script src="{{ 'javascripts/home-journal.js' | url }}"></script>
 {% endblock %}

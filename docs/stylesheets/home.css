@@ -98,7 +98,8 @@
   color: var(--st-muted);
 }
 
-.st-home .st-label {
+.st-home .st-label,
+.st-home .st-hint {
   color: var(--st-muted);
 }
 
@@ -111,7 +112,8 @@
    44px tap target comes from an invisible ::after on each link instead of
    taller rows. Neighbouring targets overlap by 16px; a tap there goes to
    the lower link. */
-.st-home .st-docs {
+.st-home .st-docs,
+.st-home .st-docs > .st-val {
   display: flex;
   align-items: center;
 }
@@ -186,8 +188,46 @@
   color: var(--bondad-amber, #FFB86B);
 }
 
+/* Theme red: 6.75:1 dark, 5.1:1 light. */
+.st-home .st-err {
+  color: var(--bondad-red, #FF6B57);
+}
+
+/* Lines added live by javascripts/home-journal.js fade in. */
+.st-home .st-log--new {
+  animation: st-log-in 400ms ease-out both;
+}
+
+/* Opacity only: the script measures line positions while they fade. */
+@keyframes st-log-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Live journal (with JavaScript; .st-js is set in overrides/home.html
+   before the page renders): a fixed-height box, six rows here, so the
+   page doesn't grow as lines arrive or jump when the script starts. The
+   no-JS lines are hidden until the script replaces them. Fills from the
+   top; once full (--full), new lines enter at the bottom and the oldest
+   scroll off the top, as in a terminal. */
+.st-js .st-home .st-log-out {
+  height: calc(6 * 1.9em);
+  overflow: hidden;
+}
+
+.st-js .st-home .st-log-out:not([data-live]) {
+  visibility: hidden;
+}
+
+.st-home .st-log-out--full {
+  justify-content: flex-end;
+}
+
 /* Closing prompt with a coral cursor block. */
 .st-home .st-footer {
+  /* Sit 20px under the journal, matching the 20px above its first line,
+     instead of the full gap between sections (3rem, minus 2rem here). */
+  margin-top: -2rem;
   display: flex;
   align-items: flex-end;
   padding-top: 1.2rem;
@@ -206,6 +246,109 @@
   animation: st-blink 1.1s steps(1) infinite;
 }
 
+/* Phones and narrow windows (under 720px, where the longest status line
+   no longer fits). Scrolling sideways hid half of every line, so here the
+   output reflows like a terminal resized narrow: labels stay right-aligned
+   in a 9-character column, values wrap beside them, journal lines wrap
+   with a hanging indent. The padding spaces in the markup collapse
+   (white-space: normal), so the same markup serves both layouts. */
+@media screen and (max-width: 44.9375em) {
+  .st-home {
+    gap: 2rem;
+    margin-top: 0;
+  }
+
+  .st-home .st-section {
+    gap: 1rem;
+  }
+
+  .st-home .st-footer {
+    margin-top: -1rem;           /* 2rem gap here, so 20px as on desktop */
+  }
+
+  .st-home .st-out,
+  .st-home .st-log-out {
+    width: auto;
+    white-space: normal;
+  }
+
+  .st-home .st-out {
+    font-size: 0.7rem;           /* 14px */
+    line-height: 1.7;
+  }
+
+  /* Unit line wraps under the name, not under the dot. */
+  .md-typeset .st-home .st-unit {
+    margin-bottom: 0.5rem;
+    padding-left: 1.2em;
+    text-indent: -1.2em;
+    font-size: 1.1rem;           /* 22px */
+  }
+
+  .st-home .st-line {
+    display: flex;
+  }
+
+  .st-home .st-line > .st-label {
+    flex: none;
+    width: 9ch;
+    margin-right: 1ch;
+    text-align: right;
+  }
+
+  .st-home .st-val {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* The hint's padding spaces collapse away here, so put one back. */
+  .st-home .st-hint {
+    margin-left: 1ch;
+  }
+
+  /* Keep a command-line flag in one piece instead of breaking it at its
+     hyphens (`--break-` / `them`). */
+  .st-home .st-arg {
+    white-space: nowrap;
+  }
+
+  .st-home .st-log-out {
+    font-size: 0.65rem;          /* 13px */
+    line-height: 1.7;
+  }
+
+  .st-home .st-log {
+    padding-left: 2ch;
+    text-indent: -2ch;
+  }
+
+  /* Space between lines, above rather than below, so a full journal has
+     no gap under its newest line. */
+  .st-home .st-log + .st-log {
+    margin-top: 0.3rem;
+  }
+
+  /* Only the time on phones: "22:22:07 Message", not the full
+     "Nov 07 22:22:07 bondad ehsan[1]: Message", so lines wrap less. */
+  .st-home .st-log-date,
+  .st-home .st-log-src {
+    display: none;
+  }
+
+  /* Five lines of two rows each, which is what nearly every message
+     takes at 360-414px with the short prefix. A one-row message leaves
+     the oldest line half scrolled off the top; a short fade there makes
+     that read as scrolling, not clipping. */
+  .st-js .st-home .st-log-out {
+    height: calc(5 * 2 * 1.7em + 4 * 0.3rem);
+  }
+
+  .st-home .st-log-out--full {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 1.2em);
+    mask-image: linear-gradient(to bottom, transparent, #000 1.2em);
+  }
+}
+
 @keyframes st-pulse {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.35; }
@@ -217,7 +360,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .st-home .st-dot,
-  .st-home .st-cursor {
+  .st-home .st-cursor,
+  .st-home .st-log--new {
     animation: none;
   }
 }
