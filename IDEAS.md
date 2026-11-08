@@ -82,8 +82,31 @@ theme from this repo; move them over there.
   `--bondad-green` (and red, amber, blue, violet) per scheme, but they're
   undocumented. Documenting them as the "status" palette would let sites
   use them without guessing.
+- **Stop shipping package files into sites.** `__init__.py`,
+  `__pycache__/` and `mkdocs_theme.yml` are copied into every site's
+  output along with the theme's assets. This repo's CI deletes them after
+  the build (`.github/workflows/docs.yml`); fix it in the theme's
+  packaging, then drop that step.
 - **Per-page stylesheets under instant navigation.** A page-specific
   stylesheet linked from `<head>` doesn't load or unload with
   `navigation.instant`, so the home page links its CSS from inside the
   content block. A theme-level hook (e.g. `extra_css` in front matter) would
   be neater.
+
+## Check after upgrading Zensical or the bondad theme
+
+The home page has no site header or footer (`overrides/home.html`), which
+relies on two details of Zensical's JavaScript (tested with 0.1.0):
+
+- **It needs a `[data-md-component=header]` element.** Without one the
+  whole script stops (light/dark toggle, instant navigation), so the home
+  page keeps an empty `<header class="st-topbar">` holding just the toggle.
+- **It skips instant navigation for links with a `target`.**
+  `docs/javascripts/home-links.js` relies on this to force full page loads
+  into and out of the home page; otherwise pages arriving from home keep
+  its empty header. The home page also reloads itself if it detects it
+  arrived via instant navigation anyway.
+
+After an upgrade: open the home page (toggle works, no console errors),
+go to the blog and back (the blog has its logo and search), and click the
+blog's logo (the home page has no site header).

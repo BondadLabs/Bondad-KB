@@ -6,6 +6,24 @@
  * bondad theme's variables, so the light and dark schemes both work.
  */
 
+/* The light/dark toggle, alone in the top-right corner: overrides/home.html
+   replaces the site header with it. */
+.st-topbar {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  z-index: 1;
+  display: flex;
+  color: var(--md-default-fg-color--light);
+  /* Zensical's script adds its header shadow class here too. */
+  box-shadow: none;
+}
+
+.st-topbar .md-header__button:hover,
+.st-topbar .md-header__button:focus-visible {
+  color: var(--md-primary-fg-color);
+}
+
 .st-home {
   /* Status green. The theme defines it per scheme (#3DDC97 dark, #13784F
      light); the fallback is the dark value for a non-bondad palette. */

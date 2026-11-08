@@ -12,12 +12,39 @@
 -#}
 {% extends "main.html" %}
 
+{#- Terminal-only page: no site header or footer. `main.html` is the bondad
+    theme's (base.html plus its colour schemes and fonts), so extending it
+    rather than base.html keeps those.
+
+    The header is replaced by just the light/dark toggle, top right: the
+    palette form and the script that applies the saved choice before the
+    page renders, both as the header would include them. It keeps
+    data-md-component="header": Zensical's script requires that element
+    and stops entirely (toggle, instant navigation) without it. -#}
+{% block header %}
+  <header class="st-topbar" data-md-component="header">
+    {% if config.theme.palette and config.theme.palette is not mapping %}
+      {% include "partials/palette.html" %}
+      {% include "partials/javascripts/palette.html" %}
+    {% endif %}
+  </header>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
 {% block content %}
   <link rel="stylesheet" href="{{ 'stylesheets/home.css' | url }}">
   {#- Runs before the journal is parsed, so home.css can give it its live
       height (and hide the no-JS lines) from the first paint, with no jump
       when home-journal.js takes over. -#}
   <script>document.documentElement.classList.add("st-js")</script>
+  {#- Safety net: if instant navigation brought us here, the previous
+      page's header is still in place (this page's is header.st-topbar),
+      so load the page properly. javascripts/home-links.js normally
+      prevents this. -#}
+  <script>
+    if (!document.querySelector("header.st-topbar")) location.reload();
+  </script>
   <div class="st-home">
     {{ page.content }}
     <footer class="st-footer">

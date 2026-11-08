@@ -19,9 +19,14 @@ jobs:
       - uses: actions/checkout@v5
       # Install from uv.lock, so the build uses the pinned zensical and
       # bondad-zensical theme versions.
-      - uses: astral-sh/setup-uv@v10
+      # setup-uv publishes exact version tags only (no floating v10).
+      - uses: astral-sh/setup-uv@v10.3.3
       - run: uv sync --frozen
       - run: uv run zensical build --clean
+      # The bondad theme's package files get copied into the site with its
+      # assets. Harmless, but not meant to be published; remove them until
+      # the theme (../Bondad-Zensical) stops shipping them.
+      - run: rm -rf site/__init__.py site/__pycache__ site/mkdocs_theme.yml
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site
